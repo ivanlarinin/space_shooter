@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 /// <summary>
 /// Уничтожаемый объект на сцене. То что может иметь хит поинты.
@@ -23,6 +24,9 @@ public class Destructible : Entity
     /// </summary>
     private int m_CurrentHitPoints;
     public int HitPoints => m_CurrentHitPoints;
+
+    [Header("Explosion")]
+    [SerializeField] private GameObject m_ExplosionPrefab;
 
     #endregion
 
@@ -58,6 +62,16 @@ public class Destructible : Entity
     /// </summary>
     protected virtual void OnDeath()
     {
+        // Instantiate the explosion prefab at the current object's position
+        if (m_ExplosionPrefab != null)
+        {
+            Instantiate(m_ExplosionPrefab, transform.position, Quaternion.identity);
+        }
+
         Destroy(gameObject);
+        m_EventOnDeath?.Invoke();
     }
+
+    [SerializeField] private UnityEvent m_EventOnDeath;
+    public UnityEvent EventOnDeath => m_EventOnDeath;
 }

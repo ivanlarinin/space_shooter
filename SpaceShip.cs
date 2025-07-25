@@ -90,8 +90,8 @@ public class SpaceShip : Destructible
             // TrailRenderer
             GameObject trailObject = new GameObject("EngineTrail");
             trailObject.transform.SetParent(transform);
-            trailObject.transform.localPosition = new Vector3(0.0f,-0.3f,0.0f);
-            
+            trailObject.transform.localPosition = new Vector3(0.0f, -0.3f, 0.0f);
+
             m_EngineTrail = trailObject.AddComponent<TrailRenderer>();
         }
 
@@ -106,7 +106,8 @@ public class SpaceShip : Destructible
         m_EngineTrail.endWidth = 0f;
         m_EngineTrail.startColor = m_TrailStartColor;
         m_EngineTrail.endColor = m_TrailEndColor;
-        m_EngineTrail.sortingOrder = -1;
+        m_EngineTrail.sortingLayerName = "Middle";
+        //m_EngineTrail.sortingOrder = 0;
     }
 
     /// <summary>
@@ -117,13 +118,13 @@ public class SpaceShip : Destructible
         if (m_EngineTrail == null) return;
 
         float thrustAmount = Mathf.Max(0, ThrustControl);
-        
+
         if (thrustAmount > 0.01f)
         {
             // Включаем трейл при тяге
             m_EngineTrail.time = Mathf.Lerp(m_MinTrailTime, m_MaxTrailTime, thrustAmount);
             m_EngineTrail.startWidth = Mathf.Lerp(m_MinTrailWidth, m_MaxTrailWidth, thrustAmount);
-            
+
             // Динамически изменяем цвет на основе тяги
             Color currentStartColor = Color.Lerp(m_TrailStartColor * 0.5f, m_TrailStartColor, thrustAmount);
             m_EngineTrail.startColor = currentStartColor;
@@ -148,5 +149,19 @@ public class SpaceShip : Destructible
 
         m_Rigid.AddTorque(-m_Rigid.angularVelocity * (m_Mobility / m_MaxAngularVelocity) * Time.fixedDeltaTime, ForceMode2D.Force);
     }
+    
+    [SerializeField] private Turret[] m_Turrets;
+
+    public void Fire(TurretMode mode)
+    {
+        for (int i = 0; i < m_Turrets.Length; i++)
+        {
+            if (m_Turrets[i].Mode == mode)
+            {
+                m_Turrets[i].Fire();
+            }
+        }
+    }
+
 
 }
