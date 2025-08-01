@@ -49,6 +49,17 @@ public class Destructible : Entity
     {
         if (m_Indestructible) return;
 
+        // Check for shield system first
+        ShieldSystem shieldSystem = GetComponent<ShieldSystem>();
+        if (shieldSystem != null && shieldSystem.HasShield)
+        {
+            float remainingDamage = shieldSystem.AbsorbDamage(damage);
+            damage = Mathf.RoundToInt(remainingDamage);
+            
+            // If all damage was absorbed by shield, don't apply any to hull
+            if (damage <= 0) return;
+        }
+
         m_CurrentHitPoints -= damage;
 
         if (m_CurrentHitPoints <= 0)

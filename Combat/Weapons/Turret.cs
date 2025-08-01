@@ -34,11 +34,17 @@ public class Turret : MonoBehaviour
         if (m_TurretProperties == null) return;
         if (m_RefireTimer > 0) return;
 
-        if (m_Ship.DrawEnergy(m_TurretProperties.EnergyUsage) == false)
-            return;
-
-        if (m_Ship.DrawAmmo(m_TurretProperties.AmmoUsage) == false)
-            return;
+        // Primary turrets use energy, secondary turrets use ammo
+        if (m_Mode == TurretMode.Primary)
+        {
+            if (m_Ship.DrawEnergy(m_TurretProperties.EnergyUsage) == false)
+                return;
+        }
+        else if (m_Mode == TurretMode.Secondary)
+        {
+            if (m_Ship.DrawAmmo(m_TurretProperties.AmmoUsage) == false)
+                return;
+        }
 
 
         Projectile projectile = Instantiate(m_TurretProperties.ProjectilePrefab).GetComponent<Projectile>();
