@@ -12,8 +12,8 @@ public class ShieldSystem : MonoBehaviour
     
     [Header("Visual Effects")]
     [SerializeField] private SpriteRenderer m_ShieldRenderer;
-    [SerializeField] private Color m_FullShieldColor = Color.cyan;
-    [SerializeField] private Color m_LowShieldColor = Color.red;
+    [SerializeField] private Color m_FullShieldColor = new Color(0, 1, 1, 0.7f);
+    [SerializeField] private Color m_LowShieldColor = new Color(1, 0, 0, 0.7f);
     [SerializeField] private float m_ShieldPulseSpeed = 2f;
     
     private float m_CurrentShieldHealth;

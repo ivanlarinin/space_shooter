@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
+using System.Collections.Generic;
 
 /// <summary>
 /// Уничтожаемый объект на сцене. То что может иметь хит поинты.
@@ -68,6 +69,42 @@ public class Destructible : Entity
 
     #endregion
 
+
+    private static HashSet<Destructible> m_AllDestructibles;
+
+    public static IReadOnlyCollection<Destructible> AllDestructibles => m_AllDestructibles;
+
+    protected virtual void OnEnable()
+    {
+        if (m_AllDestructibles == null)
+        {
+            m_AllDestructibles = new HashSet<Destructible>();
+        }
+        m_AllDestructibles.Add(this);
+    }
+
+    protected virtual void OnDestroy()
+    {
+        m_AllDestructibles.Remove(this);
+    }
+
+    public const int TeamIdNeutral = 0;
+
+    [SerializeField] private int m_TeamId;
+    public int TeamId => m_TeamId;
+    
+    /// <summary>
+    /// Sets the team ID for this destructible object
+    /// </summary>
+    /// <param name="teamId">The team ID to assign</param>
+    public void SetTeamId(int teamId)
+    {
+        m_TeamId = teamId;
+    }
+
+    [SerializeField] private UnityEvent m_EventOnDeath;
+    public UnityEvent EventOnDeath => m_EventOnDeath;
+
     /// <summary>
     /// Called when the object's hit points reach zero or below, triggering its destruction.
     /// </summary>
@@ -82,7 +119,4 @@ public class Destructible : Entity
         Destroy(gameObject);
         m_EventOnDeath?.Invoke();
     }
-
-    [SerializeField] private UnityEvent m_EventOnDeath;
-    public UnityEvent EventOnDeath => m_EventOnDeath;
 }
