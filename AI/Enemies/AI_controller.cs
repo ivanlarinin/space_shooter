@@ -18,6 +18,8 @@ public class AIController : MonoBehaviour
         Patrol  // Patrol behavior - move between points and engage targets
     }
 
+    #region Fields
+
     [Header("AI Configuration")]
     [SerializeField] private AIBehaviour m_AIBehaviour;        // Current AI behavior mode
     [SerializeField] private AIPointPatrol m_PatrolPoint;      // Reference to patrol point/route
@@ -46,6 +48,12 @@ public class AIController : MonoBehaviour
     private Timer m_FireTimer;                  // Controls firing rate
     private Timer m_FindNewTargetTimer;         // Controls target search frequency
 
+    private const float ProjectileSpeed = 15.0f;
+
+    #endregion
+
+    #region Unity Methods
+
     /// <summary>
     /// Initialize AI controller and get required components
     /// </summary>
@@ -69,11 +77,17 @@ public class AIController : MonoBehaviour
     /// </summary>
     private void UpdateAI()
     {
+        // Debug.Log(m_AIBehaviour);
         if (m_AIBehaviour == AIBehaviour.Patrol)
         {
             UpdateBehaviouralPatrol();
         }
     }
+
+    #endregion
+
+
+    #region PrivateMethods
 
     /// <summary>
     /// Patrol behavior update - handles movement, targeting, combat, and collision avoidance
@@ -93,52 +107,52 @@ public class AIController : MonoBehaviour
     /// </summary>
     private void ActionFindNewMovePosition()
     {
-        if (m_AIBehaviour == AIBehaviour.Patrol)
+        // If we have a target, move towards it
+        if (m_SelectedTarget != null)
         {
-            // If we have a target, move towards it
-            if (m_SelectedTarget != null)
+            Vector3 targetVelocity = GetTargetVelocity(m_SelectedTarget);
+            m_MovePosition = MakeLead(m_SelectedTarget.transform.position, targetVelocity, ProjectileSpeed);
+        }
+        else
+        {
+            // No target - perform patrol behavior
+            if (m_PatrolPoint != null)
             {
-                Vector3 targetVelocity = GetTargetVelocity(m_SelectedTarget);
-                m_MovePosition = MakeLead(m_SelectedTarget.transform.position, targetVelocity, 15.0f); // Fixed projectile speed
-            }
-            else
-            {
-                // No target - perform patrol behavior
-                if (m_PatrolPoint != null)
+                // Check if using predefined patrol route
+                if (m_PatrolPoint.UsePatrolRoute && m_PatrolPoint.PatrolPointsCount > 0)
                 {
-                    // Check if using predefined patrol route
-                    if (m_PatrolPoint.UsePatrolRoute && m_PatrolPoint.PatrolPointsCount > 0)
+                    // Check if we've reached the current patrol point
+                    if (m_PatrolPoint.IsAtPatrolPoint(transform.position))
                     {
-                        // Check if we've reached the current patrol point
-                        if (m_PatrolPoint.IsAtPatrolPoint(transform.position))
+                        // Advance to next patrol point
+                        m_PatrolPoint.AdvanceToNextPatrolPoint();
+                    }
+                    
+                    // Move towards current patrol point
+                    m_MovePosition = m_PatrolPoint.GetCurrentPatrolPoint();
+                }
+                else
+                {
+                    // Random patrol behavior within patrol zone
+                    bool isInsidePatrolZone = (m_PatrolPoint.transform.position - transform.position).sqrMagnitude < m_PatrolPoint.Radius * m_PatrolPoint.Radius;
+
+                    // Debug.Log(isInsidePatrolZone);
+
+                    if (isInsidePatrolZone == true)
+                    {
+                        // Inside patrol zone - move to random point
+                        if (m_RandomizeDirectionTimer.IsFinished == true)
                         {
-                            // Advance to next patrol point
-                            m_PatrolPoint.AdvanceToNextPatrolPoint();
+                            Vector2 newPoint = UnityEngine.Random.insideUnitSphere * m_PatrolPoint.Radius + m_PatrolPoint.transform.position;
+                            // Debug.Log("Position: " + newPoint);
+                            m_MovePosition = newPoint;
+                            m_RandomizeDirectionTimer.Start(m_RandomSelectMovePointTime);
                         }
-                        
-                        // Move towards current patrol point
-                        m_MovePosition = m_PatrolPoint.GetCurrentPatrolPoint();
                     }
                     else
                     {
-                        // Original random patrol behavior within patrol zone
-                        bool isInsidePatrolZone = (m_PatrolPoint.transform.position - transform.position).sqrMagnitude < m_PatrolPoint.Radius * m_PatrolPoint.Radius;
-
-                        if (isInsidePatrolZone == true)
-                        {
-                            // Inside patrol zone - move to random point
-                            if (m_RandomizeDirectionTimer.IsFinished == true)
-                            {
-                                Vector2 newPoint = UnityEngine.Random.insideUnitSphere * m_PatrolPoint.Radius + m_PatrolPoint.transform.position;
-                                m_MovePosition = newPoint;
-                                m_RandomizeDirectionTimer.Start(m_RandomSelectMovePointTime);
-                            }
-                        }
-                        else
-                        {
-                            // Outside patrol zone - return to center
-                            m_MovePosition = m_PatrolPoint.transform.position;
-                        }
+                        // Outside patrol zone - return to center
+                        m_MovePosition = m_PatrolPoint.transform.position;
                     }
                 }
             }
@@ -196,6 +210,7 @@ public class AIController : MonoBehaviour
     {
         float maxDist = float.MaxValue;
         Destructible potentialTarget = null;
+        float maxSearchDistance = (m_PatrolPoint != null) ? 30.0f : float.MaxValue; // No distance limit if no patrol point
 
         foreach (var v in Destructible.AllDestructibles)
         {
@@ -222,7 +237,7 @@ public class AIController : MonoBehaviour
 
             // If the current potential target is closer than the previously found one,
             // update the closest target and the max distance
-            if (dist < maxDist && dist < 30.0f)
+            if (dist < maxDist && dist < maxSearchDistance)
             {
                 maxDist = dist;
                 potentialTarget = v;
@@ -319,6 +334,7 @@ public class AIController : MonoBehaviour
         // If no velocity component found, return zero
         return Vector3.zero;
     }
+    #endregion
 
     #region Timer Management
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace SpaceShooter
 {
-    public class MovementController : MonoBehaviour
+    public class ShipInputController : MonoBehaviour
     {
         public enum ControlMode
         {

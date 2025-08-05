@@ -19,6 +19,7 @@ public class Destructible : Entity
     /// Стартовое кол-во хитпоинтов.
     /// </summary>
     [SerializeField] private int m_HitPoints;
+    public int MaxHitPoints => m_HitPoints;
 
     /// <summary>
     /// Текущие хит поинты
@@ -119,4 +120,7 @@ public class Destructible : Entity
         Destroy(gameObject);
         m_EventOnDeath?.Invoke();
     }
+
+    [SerializeField] private int m_ScoreValue;
+    public int ScoreValue => m_ScoreValue;
 }
