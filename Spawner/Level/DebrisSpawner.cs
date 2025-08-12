@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class EntitySpawnerDebris : MonoBehaviour
 {
-    [SerializeField] private Destructible[] m_DebrisPrefabs;
+    [SerializeField] private Destructable[] m_DebrisPrefabs;
     [SerializeField] private CircleArea m_Area;
     [SerializeField] private int m_NumDebris;
     [SerializeField] private float m_RandomSpeed;
@@ -21,7 +21,7 @@ public class EntitySpawnerDebris : MonoBehaviour
         GameObject debris = Instantiate(m_DebrisPrefabs[index].gameObject);
         debris.transform.position = m_Area.GetRandomInsideZone();
 
-        debris.GetComponent<Destructible>().EventOnDeath.AddListener(OnDebrisDead);
+        debris.GetComponent<Destructable>().EventOnDeath.AddListener(OnDebrisDead);
         Rigidbody2D rb = debris.GetComponent<Rigidbody2D>();
 
 

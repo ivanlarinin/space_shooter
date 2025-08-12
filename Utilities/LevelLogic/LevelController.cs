@@ -32,7 +32,6 @@ public class LevelController : SingletonBase<LevelController>
             m_LevelTime += Time.deltaTime;
             CheckLevelConditions();
         }
-        CheckLevelConditions();
 
         if (Player.Instance.NumLives == 0)
         {
@@ -82,6 +81,6 @@ public class LevelController : SingletonBase<LevelController>
 
     public void RestartLevel()
     {
-        SceneManager.LoadScene(m_LevelProperties.NextLevel.SceneName);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

@@ -6,14 +6,14 @@ public abstract class ProjectileBase : Entity
     [SerializeField] private float m_Lifetime;
     [SerializeField] private int m_Damage;
 
-    protected virtual void OnHit(Destructible destructible) { }
+    protected virtual void OnHit(Destructable destructible) { }
     protected virtual void OnCollide2D(Collider2D Collider2D) { }
     protected virtual void OnProjectileLifeEnd(Collider2D col, Vector2 pos) { }
 
     private float m_Timer;
-    protected Destructible m_Parent;
+    protected Destructable m_Parent;
 
-    public void SetParentShooter(Destructible parent)
+    public void SetParentShooter(Destructable parent)
     {
         m_Parent = parent;
     }
@@ -29,7 +29,7 @@ public abstract class ProjectileBase : Entity
         {
             OnCollide2D(hit.collider);
 
-            Destructible dest = hit.collider.transform.root.GetComponent<Destructible>();
+            Destructable dest = hit.collider.transform.root.GetComponent<Destructable>();
 
             if (dest != null && dest != m_Parent)
             {

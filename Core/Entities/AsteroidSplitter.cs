@@ -6,15 +6,15 @@ using UnityEngine;
 public class AsteroidSplitter : MonoBehaviour
 {
     [Header("Asteroid Splitting")]
-    [SerializeField] private Destructible[] m_SmallerDebrisPrefabs;
+    [SerializeField] private Destructable[] m_SmallerDebrisPrefabs;
     [SerializeField] private int m_SplitCount = 2;
     [SerializeField] private float m_SplitForce = 3f;
 
-    private Destructible m_Destructible;
+    private Destructable m_Destructible;
 
     private void Start()
     {
-        m_Destructible = GetComponent<Destructible>();
+        m_Destructible = GetComponent<Destructable>();
         if (m_Destructible != null)
         {
             m_Destructible.EventOnDeath.AddListener(OnAsteroidDestroyed);
@@ -41,7 +41,7 @@ public class AsteroidSplitter : MonoBehaviour
         {
             // Randomly select a smaller debris prefab
             int prefabIndex = Random.Range(0, m_SmallerDebrisPrefabs.Length);
-            Destructible smallerDebris = Instantiate(m_SmallerDebrisPrefabs[prefabIndex]);
+            Destructable smallerDebris = Instantiate(m_SmallerDebrisPrefabs[prefabIndex]);
             
             // Position slightly offset from the original
             Vector2 randomOffset = Random.insideUnitCircle * 0.5f;

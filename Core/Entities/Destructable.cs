@@ -5,7 +5,7 @@ using System.Collections.Generic;
 /// <summary>
 /// Уничтожаемый объект на сцене. То что может иметь хит поинты.
 /// </summary>
-public class Destructible : Entity
+public class Destructable : Entity
 {
     #region Properties
 
@@ -71,15 +71,15 @@ public class Destructible : Entity
     #endregion
 
 
-    private static HashSet<Destructible> m_AllDestructibles;
+    private static HashSet<Destructable> m_AllDestructibles;
 
-    public static IReadOnlyCollection<Destructible> AllDestructibles => m_AllDestructibles;
+    public static IReadOnlyCollection<Destructable> AllDestructibles => m_AllDestructibles;
 
     protected virtual void OnEnable()
     {
         if (m_AllDestructibles == null)
         {
-            m_AllDestructibles = new HashSet<Destructible>();
+            m_AllDestructibles = new HashSet<Destructable>();
         }
         m_AllDestructibles.Add(this);
     }

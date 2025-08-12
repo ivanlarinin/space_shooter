@@ -16,7 +16,7 @@ namespace SpaceShooter
                 return;
             }
 
-            var destructible = transform.root.GetComponent<Destructible>();
+            var destructible = transform.root.GetComponent<Destructable>();
 
             if (destructible != null)
             {

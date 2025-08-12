@@ -37,11 +37,12 @@ public class AIController : MonoBehaviour
 
     [Header("Combat Settings")]
     [SerializeField] private float m_EvadeRayLength;           // Length of collision detection ray
+    [SerializeField] private float m_AggroRange = 50f; // Alert Enemy Distance
 
     // Internal state variables
     private SpaceShip m_SpaceShip;              // Reference to the spaceship component
     private Vector3 m_MovePosition;             // Current target position for movement
-    private Destructible m_SelectedTarget;      // Currently selected target for attack
+    private Destructable m_SelectedTarget;      // Currently selected target for attack
 
     // Timer objects for controlling AI behavior timing
     private Timer m_RandomizeDirectionTimer;    // Controls random direction changes
@@ -180,6 +181,8 @@ public class AIController : MonoBehaviour
         {
             if (m_FireTimer.IsFinished == true)
             {
+                Debug.Log($"[AI] {name} firing at {m_SelectedTarget.name}");
+                
                 m_SpaceShip.Fire(TurretMode.Primary);
 
                 m_FireTimer.Start(m_ShootDelay);
@@ -206,13 +209,13 @@ public class AIController : MonoBehaviour
     /// Returns the closest enemy target or null if none found
     /// </summary>
     /// <returns>The nearest valid target or null</returns>
-    private Destructible FindNearestDestructibleTarget()
+    private Destructable FindNearestDestructibleTarget()
     {
         float maxDist = float.MaxValue;
-        Destructible potentialTarget = null;
-        float maxSearchDistance = (m_PatrolPoint != null) ? 30.0f : float.MaxValue; // No distance limit if no patrol point
+        Destructable potentialTarget = null;
+        float maxSearchDistance = (m_PatrolPoint != null) ? m_AggroRange : float.MaxValue; // No distance limit if no patrol point
 
-        foreach (var v in Destructible.AllDestructibles)
+        foreach (var v in Destructable.AllDestructibles)
         {
             // Skip if the destructible is the current spaceship itself
             if (v.GetComponent<SpaceShip>() == m_SpaceShip)
@@ -221,7 +224,7 @@ public class AIController : MonoBehaviour
             }
             
             // Skip if the destructible belongs to a neutral team
-            if (v.TeamId == Destructible.TeamIdNeutral)
+            if (v.TeamId == Destructable.TeamIdNeutral)
             {
                 continue;
             }
@@ -311,7 +314,7 @@ public class AIController : MonoBehaviour
     /// </summary>
     /// <param name="target">Target to get velocity from</param>
     /// <returns>Velocity vector of the target</returns>
-    private Vector3 GetTargetVelocity(Destructible target)
+    private Vector3 GetTargetVelocity(Destructable target)
     {
         // Try to get velocity from SpaceShip component
         SpaceShip targetShip = target.GetComponent<SpaceShip>();

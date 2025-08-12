@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class SpaceShip : Destructible
+public class SpaceShip : Destructable
 {
     [SerializeField] private Sprite m_PreviewImage;
     
@@ -97,10 +97,8 @@ public class SpaceShip : Destructible
     {
         for (int i = 0; i < m_Turrets.Length; i++)
         {
-            if (m_Turrets[i].Mode == mode)
-            {
-                m_Turrets[i].Fire();
-            }
+            var t = m_Turrets[i];
+            if (t != null && t.Mode == mode) t.Fire();
         }
     }
 

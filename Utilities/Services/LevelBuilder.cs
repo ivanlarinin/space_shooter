@@ -1,3 +1,4 @@
+using SpaceShooter;
 using UnityEngine;
 
 public class LevelBuilder : MonoBehaviour
@@ -9,10 +10,17 @@ public class LevelBuilder : MonoBehaviour
 
     [Header("Dependencies")]
     [SerializeField] private PlayerSpawner m_PlayerSpawner;
+    [SerializeField] private LevelBoundary levelBoundary;
+    [SerializeField] private LevelController m_LevelController;
 
     private void Awake()
     {
+        levelBoundary.Init();
+        m_LevelController.Init();
+
         Player player = m_PlayerSpawner.Spawn();
+
+        player.Init();
 
         Instantiate(m_PlayerHUDPrefab);
         Instantiate(m_LevelGUIPrefab);

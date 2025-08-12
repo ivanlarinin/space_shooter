@@ -88,7 +88,7 @@ public class TeamBattleSpawner : MonoBehaviour
             m_SpawnedBots.Add(bot);
             
             // Set team ID
-            Destructible destructible = bot.GetComponent<Destructible>();
+            Destructable destructible = bot.GetComponent<Destructable>();
             if (destructible != null)
             {
                 destructible.SetTeamId(teamId);

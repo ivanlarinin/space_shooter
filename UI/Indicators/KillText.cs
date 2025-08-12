@@ -3,6 +3,8 @@ using UnityEngine.UI;
 
 public class KillText : MonoBehaviour
 {
+    private const string KillsTextPrefix = "Kills : ";
+
     [SerializeField] private Text m_Text;
 
     private int lastNumKills;
@@ -13,7 +15,7 @@ public class KillText : MonoBehaviour
 
         if (lastNumKills != numKills)
         {
-            m_Text.text = "Kills : " + numKills.ToString();
+            m_Text.text = KillsTextPrefix + numKills.ToString();
             lastNumKills = numKills;
         }
     }

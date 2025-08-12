@@ -4,7 +4,7 @@ public class Projectile : ProjectileBase
 {
     [SerializeField] private ImpactEffect m_ImpactEffectPrefab;
 
-    protected override void OnHit(Destructible destructible)
+    protected override void OnHit(Destructable destructible)
     {
         if (m_Parent == Player.Instance.ActiveShip)
         {
