@@ -4,7 +4,7 @@ A small 2D space shooter game built with **Unity**.
 
 ## Features
 
-![Gameplay Demo](media/spaceshooter.gif)
+![Gameplay Demo](media/output.gif)
 
 * Multiple ships with different stats (speed, agility, hitpoints).
 * Power-ups (shields, energy, ammo, weapons).
@@ -13,3 +13,4 @@ A small 2D space shooter game built with **Unity**.
 * Level goals and conditions (score, position, survival).
 * Simple parallax background and camera follow system
 * Simple AI ship logic
+
