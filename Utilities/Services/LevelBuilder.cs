@@ -27,5 +27,8 @@ public class LevelBuilder : MonoBehaviour
 
         GameObject background = Instantiate(m_BackgroundPrefab);
         background.AddComponent<SyncTransform>().SetTarget(player.FollowCamera.transform);
+
+        var parallax = background.GetComponent<StarfieldParallaxController>();
+        if (parallax) parallax.target = player.FollowCamera.transform;
     }
 }

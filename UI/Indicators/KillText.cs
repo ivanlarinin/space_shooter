@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class KillText : MonoBehaviour
 {
-    private const string KillsTextPrefix = "Kills : ";
+    private const string KillsTextPrefix = "Kills: ";
 
     [SerializeField] private Text m_Text;
 

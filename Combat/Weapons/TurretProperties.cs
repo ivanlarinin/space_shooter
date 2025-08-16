@@ -1,5 +1,9 @@
 using UnityEngine;
 
+/// <summary>
+/// Defines whether a turret is a primary or secondary weapon.
+/// Primary = uses energy, Secondary = uses ammo.
+/// </summary>
 public enum TurretMode
 {
     Primary,

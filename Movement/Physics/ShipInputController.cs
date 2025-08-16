@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Handles player input for controlling a SpaceShip.
+/// Supports both keyboard and mobile (virtual joystick + on-screen buttons) control modes.
+/// </summary>
 public class ShipInputController : MonoBehaviour
 {
     public enum ControlMode

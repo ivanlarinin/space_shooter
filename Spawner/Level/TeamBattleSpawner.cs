@@ -11,7 +11,9 @@ public class TeamBattleSpawner : MonoBehaviour
     [SerializeField] private int m_BotsPerTeam = 4;           // Number of bots per team
     [SerializeField] private CircleArea m_Team1SpawnArea;      // Spawn area for team 1
     [SerializeField] private CircleArea m_Team2SpawnArea;      // Spawn area for team 2
-    
+    [SerializeField] private bool shieldsEnabled = true;
+    [SerializeField] private float shieldHealth = 50f;
+
     [Header("Team Settings")]
     [SerializeField] private int m_Team1Id = 1;               // Team ID for first team
     [SerializeField] private int m_Team2Id = 2;               // Team ID for second team
@@ -19,6 +21,8 @@ public class TeamBattleSpawner : MonoBehaviour
     [Header("Trigger Settings")]
     [SerializeField] private bool m_OneTimeSpawn = true;       // Only spawn once or respawn when re-entering
     [SerializeField] private float m_TriggerCooldown = 5f;     // Cooldown between spawns if not one-time
+    
+
     
     private bool m_HasSpawned = false;
     private float m_LastSpawnTime;
@@ -93,7 +97,20 @@ public class TeamBattleSpawner : MonoBehaviour
             {
                 destructible.SetTeamId(teamId);
             }
-            
+
+            ShieldSystem shield = bot.GetComponent<ShieldSystem>();
+            if (shield != null)
+            {
+                if (shieldsEnabled)
+                {
+                    shield.SetMaxShield(shieldHealth);
+                }
+                else
+                {
+                    shield.SetMaxShield(0f); // disables shields
+                }
+            }
+
             // Set up AI controller if present
             AIController aiController = bot.GetComponent<AIController>();
             if (aiController != null)

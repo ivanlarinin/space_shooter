@@ -1,5 +1,9 @@
 using UnityEngine;
 
+/// <summary>
+/// A PowerUp that grants the player a specific weapon and optionally adds ammo for it.
+/// Inherits from the base PowerUp class.
+/// </summary>
 public class Powerup_weapon : PowerUp
 {
     [SerializeField] private TurretProperties m_Properties;

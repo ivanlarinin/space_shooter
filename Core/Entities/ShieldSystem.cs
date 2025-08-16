@@ -9,41 +9,41 @@ public class ShieldSystem : MonoBehaviour
     [SerializeField] private float m_MaxShieldHealth = 100f;
     [SerializeField] private float m_ShieldRegenRate = 10f; // per second
     [SerializeField] private float m_RegenDelay = 3f; // seconds before regen starts
-    
+
     [Header("Visual Effects")]
     [SerializeField] private SpriteRenderer m_ShieldRenderer;
     [SerializeField] private Color m_FullShieldColor = new Color(0, 1, 1, 0.7f);
     [SerializeField] private Color m_LowShieldColor = new Color(1, 0, 0, 0.7f);
     [SerializeField] private float m_ShieldPulseSpeed = 2f;
-    
+
     private float m_CurrentShieldHealth;
     private float m_LastDamageTime;
     private bool m_IsRegenerating;
     private SpaceShip m_SpaceShip;
-    
+
     public float ShieldHealth => m_CurrentShieldHealth;
     public float ShieldHealthPercent => m_CurrentShieldHealth / m_MaxShieldHealth;
     public bool HasShield => m_CurrentShieldHealth > 0f;
-    
+
     private void Start()
     {
         m_CurrentShieldHealth = m_MaxShieldHealth;
         m_SpaceShip = GetComponent<SpaceShip>();
-        
+
         if (m_ShieldRenderer == null)
         {
             m_ShieldRenderer = GetComponentInChildren<SpriteRenderer>();
         }
-        
+
         UpdateShieldVisual();
     }
-    
+
     private void Update()
     {
         HandleShieldRegeneration();
         UpdateShieldVisual();
     }
-    
+
     /// <summary>
     /// Attempts to absorb damage with the shield
     /// </summary>
@@ -52,19 +52,20 @@ public class ShieldSystem : MonoBehaviour
     public float AbsorbDamage(float damage)
     {
         if (!HasShield) return damage;
-        
+
         m_LastDamageTime = Time.time;
         m_IsRegenerating = false;
-        
+
         float absorbedDamage = Mathf.Min(damage, m_CurrentShieldHealth);
+
         m_CurrentShieldHealth -= absorbedDamage;
-        
+
         // Visual feedback
         StartCoroutine(ShieldHitEffect());
-        
+
         return damage - absorbedDamage;
     }
-    
+
     /// <summary>
     /// Restores shield health
     /// </summary>
@@ -73,7 +74,7 @@ public class ShieldSystem : MonoBehaviour
     {
         m_CurrentShieldHealth = Mathf.Min(m_CurrentShieldHealth + amount, m_MaxShieldHealth);
     }
-    
+
     private void HandleShieldRegeneration()
     {
         if (Time.time - m_LastDamageTime > m_RegenDelay && m_CurrentShieldHealth < m_MaxShieldHealth)
@@ -83,16 +84,16 @@ public class ShieldSystem : MonoBehaviour
             m_CurrentShieldHealth = Mathf.Min(m_CurrentShieldHealth, m_MaxShieldHealth);
         }
     }
-    
+
     private void UpdateShieldVisual()
     {
         if (m_ShieldRenderer == null) return;
-        
+
         float shieldPercent = ShieldHealthPercent;
-        
+
         // Color interpolation based on shield health
         Color targetColor = Color.Lerp(m_LowShieldColor, m_FullShieldColor, shieldPercent);
-        
+
         // Add pulsing effect when regenerating
         if (m_IsRegenerating && shieldPercent < 1f)
         {
@@ -103,20 +104,27 @@ public class ShieldSystem : MonoBehaviour
         {
             targetColor.a = shieldPercent;
         }
-        
+
         m_ShieldRenderer.color = targetColor;
     }
-    
+
+    public void SetMaxShield(float value)
+    {
+        m_MaxShieldHealth = value;
+        m_CurrentShieldHealth = value;
+    }
+
     private System.Collections.IEnumerator ShieldHitEffect()
     {
         if (m_ShieldRenderer == null) yield break;
-        
+
         Color originalColor = m_ShieldRenderer.color;
         Color flashColor = Color.white;
-        
+
         // Flash white on hit
         m_ShieldRenderer.color = flashColor;
         yield return new WaitForSeconds(0.1f);
         m_ShieldRenderer.color = originalColor;
     }
+    
 } 

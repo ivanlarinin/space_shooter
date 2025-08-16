@@ -1,5 +1,9 @@
 using UnityEngine;
 
+/// <summary>
+/// Smoothly follows a target (e.g., player ship) in both position and rotation.
+/// Uses linear interpolation for movement and spherical interpolation for rotation.
+/// </summary>
 public class FollowCamera : MonoBehaviour
 {
     [SerializeField] private Transform _target;
@@ -12,7 +16,7 @@ public class FollowCamera : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (_target == null ) return;
+        if (_target == null) return;
 
         Vector3 camPos = transform.position;
         Vector3 targetPos = _target.position + _target.transform.up * _forwardOffset;

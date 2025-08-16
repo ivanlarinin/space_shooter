@@ -9,17 +9,7 @@ public class LevelGoal : MonoBehaviour
 
         if (playerShip != null)
         {
-            // The player has reached the goal!
             Debug.Log("Player reached the goal!");
-
-            // Here you would add logic for winning the level:
-            // - Load next level
-            // - Show a win screen
-            // - Stop player movement
-            // Example:
-            // LevelManager.Instance.LoadNextLevel(); // If you have a LevelManager singleton
-            // playerShip.ThrustControl = 0;
-            // playerShip.TorqueControl = 0;
         }
     }
 }

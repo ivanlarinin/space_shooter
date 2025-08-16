@@ -1,5 +1,11 @@
 using UnityEngine;
 
+/// <summary>
+/// Controls a starfield material to create a parallax scrolling effect
+/// based on the position of a target (e.g., the player ship or camera).
+/// </summary>
+
+[DefaultExecutionOrder(100)]
 public class StarfieldParallaxController : MonoBehaviour
 {
     public Material starfieldMaterial;

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EntitySpawnerDebris : MonoBehaviour
+public class DebrisSpawner : MonoBehaviour
 {
     [SerializeField] private Destructable[] m_DebrisPrefabs;
     [SerializeField] private CircleArea m_Area;

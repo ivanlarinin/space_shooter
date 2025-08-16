@@ -1,5 +1,10 @@
 using UnityEngine;
 
+/// <summary>
+/// Base class for all projectile types in the game.
+/// Handles movement, raycast-based hit detection, and lifetime management.
+/// Inherit from this to implement specific projectile behavior (scoring, effects, etc.).
+/// </summary>
 public abstract class ProjectileBase : Entity
 {
     [SerializeField] private float m_Velocity;
@@ -29,11 +34,13 @@ public abstract class ProjectileBase : Entity
         {
             OnCollide2D(hit.collider);
 
-            Destructable dest = hit.collider.transform.root.GetComponent<Destructable>();
+            Destructable dest = hit.collider.GetComponentInParent<Destructable>();
 
             if (dest != null && dest != m_Parent)
             {
+                // Debug.Log($"Projectile dmg={m_Damage}");
                 dest.ApplyDamage(m_Damage);
+
 
                 OnHit(dest);
             }

@@ -61,6 +61,7 @@ public class AIController : MonoBehaviour
     private void Start()
     {
         m_SpaceShip = GetComponent<SpaceShip>();
+        // Debug.Log(m_SpaceShip);
         InitTimers();
     }
 

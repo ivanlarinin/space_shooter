@@ -1,11 +1,13 @@
-using System;
-using SpaceShooter;
 using UnityEngine;
 
+/// <summary>
+/// Singleton that manages the player's state, including their active ship, lives, score, and kills.
+/// Handles spawning, respawning, and linking the ship to camera/input controllers.
+/// </summary>
 public class Player : SingletonBase<Player>
 {
     public static SpaceShip SelectedSpaceShip;
-    
+
     [SerializeField] private int m_NumLives;
     [SerializeField] private SpaceShip m_PlayerShipPrefab;
     [SerializeField] private StarfieldParallaxController m_ParallaxController;

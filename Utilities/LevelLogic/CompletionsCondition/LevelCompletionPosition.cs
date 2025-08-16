@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-public class LevelConditionScore : LevelCondition
+public class LevelCompletionPosition : LevelCondition
 {
     [SerializeField] private float m_Radius;
 

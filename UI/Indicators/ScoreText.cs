@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class ScoreText : MonoBehaviour
 {
-    private const string ScoreTextPrefix = "Score : ";
+    private const string ScoreTextPrefix = "Score: ";
 
     [SerializeField] private Text m_Text;
 

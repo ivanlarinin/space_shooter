@@ -1,5 +1,9 @@
 using UnityEngine;
 
+/// <summary>
+/// A specific type of PowerUp that modifies the player's ammo or energy when picked up.
+/// Inherits from the base PowerUp class.
+/// </summary>
 public class PowerupStats : PowerUp
 {
     public enum EffectType

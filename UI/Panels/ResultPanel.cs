@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class ResultPanel : MonoBehaviour
 {
     private const string PassedText = "Passed";
-    private const string LoseText = "Lose";
+    private const string LoseText = "Defeat";
     private const string RestartText = "Restart";
     private const string NextText = "Next";
     private const string MainMenuText = "Main menu";
